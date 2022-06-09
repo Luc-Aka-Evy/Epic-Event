@@ -24,19 +24,19 @@ class Contract(models.Model):
     )
 
 
-class Location(models.Model):
-    adress = models.CharField(max_length=255)
-    postcode = models.CharField(max_length=5)
-
-
-
 class Event(models.Model):
     contract = models.ForeignKey(Contract, on_delete=models.CASCADE)
     description = models.CharField(max_length=2048)
     start = models.DateTimeField(null=True)
     end = models.DateTimeField(null=True)
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
-    time_created = models.DateTimeField(auto_now_add=True)
+    adress = models.CharField(max_length=255, default='')
+    created_time = models.DateTimeField(auto_now_add=True)
+    updated_time = models.DateTimeField(null=True)
     support = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="support"
     )
+
+
+class CompanyEvents(models.Model):
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)

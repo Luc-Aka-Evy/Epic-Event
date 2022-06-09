@@ -2,8 +2,9 @@ from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
-from event.models import Company, Contract, Event, Location
-from event.serializers import CompanySerializer, ContractSerializer, EventSerializer, LocationSerializer
+from datetime import datetime
+from event.models import Company, Contract, Event
+from event.serializers import CompanySerializer, ContractSerializer, EventSerializer
 # Create your views here.
 
 
@@ -41,6 +42,12 @@ class ContractViewset(MultipleSerializerMixin, ModelViewSet):
     def get_queryset(self):
         return Contract.objects.all()
 
+    def perform_create(self, serializer):
+        serializer.save(seller=self.request.user)
+
+    def perform_update(self, serializer):
+        serializer.save(updated_time=datetime.now())
+
 
 class EventViewset(MultipleSerializerMixin, ModelViewSet):
 
@@ -50,11 +57,5 @@ class EventViewset(MultipleSerializerMixin, ModelViewSet):
     def get_queryset(self):
         return Event.objects.all()
 
-
-class LocationViewset(MultipleSerializerMixin, ModelViewSet):
-
-    serializer_class = LocationSerializer
-    permission_classes = (AllowAny,)
-
-    def get_queryset(self):
-        return Location.objects.all()
+    def perform_update(self, serializer):
+        serializer.save(updated_time=datetime.now())

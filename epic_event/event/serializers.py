@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from event.models import Company, Contract, Event, Location
+from event.models import Company, Contract, Event
 
 
 class CompanySerializer(serializers.ModelSerializer):
@@ -11,7 +11,7 @@ class CompanySerializer(serializers.ModelSerializer):
     def validate_name(self, value):
         if Company.objects.filter(name=value).exists():
             raise serializers.ValidationError(
-                "There is alreadyy a company with this name"
+                "There is already a company with this name"
             )
         return value
 
@@ -31,18 +31,24 @@ class CompanySerializer(serializers.ModelSerializer):
 
     
 class ContractSerializer(serializers.ModelSerializer):
+
+    company = serializers.CharField(write_only=True)
+
     class Meta:
         model = Contract
-        fields = ["id", "company", "signed", "seller"]
+        fields = ["id", "company", "signed"]
+
+
+    def validate_company(self, value):
+        if not Company.objects.filter(name=value).exists():
+            raise serializers.ValidationError("There is no company with this name")
+
+        if Company.objects.filter(name=value).exists():
+            return Company.objects.get(name=value)
 
 
 class EventSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Event
-        fields = ["id", "contract", "description", "start", "end", "location", "support"]
-
-
-class LocationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Location
-        fields = ["id", "adress", "postcode"]
+        fields = ["id", "contract", "description", "start", "end", "adress", "support"]

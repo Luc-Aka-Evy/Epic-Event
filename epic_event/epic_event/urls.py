@@ -18,8 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework_nested import routers
 from authentication.views import UserViewset, UserCreate
-from event.views import CompanyViewset, ContractViewset, EventViewset, LocationViewset
-
+from event.views import CompanyViewset, ContractViewset, EventViewset
 admin_router = routers.SimpleRouter()
 admin_router.register("users", UserViewset, basename="users")
 
@@ -27,7 +26,6 @@ router = routers.SimpleRouter()
 router.register("company", CompanyViewset, basename="company")
 router.register("contract", ContractViewset, basename="contract")
 router.register("event", EventViewset, basename="event")
-router.register("location", LocationViewset, basename="location")
 
 
 urlpatterns = [
