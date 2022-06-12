@@ -1,12 +1,22 @@
-from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
-from rest_framework import generics
-from rest_framework.permissions import AllowAny
+from event.permissions import (
+    CompanyPermissions,
+    ContractPermissions,
+    EventPermissions,
+    CompanyEventsPermissions,
+)
 from datetime import datetime
-from event.models import Company, Contract, Event
-from event.serializers import CompanySerializer, ContractSerializer, EventSerializer
-# Create your views here.
+from event.models import Company, Contract, Event, CompanyEvents
+from event.serializers import (
+    CompanySerializer,
+    ContractSerializer,
+    ContractDetailSerializer,
+    EventSerializer,
+    EventDetailSerializer,
+    CompanyEventsSerializer,
+)
 
+# Create your views here.
 
 
 class MultipleSerializerMixin:
@@ -27,9 +37,8 @@ class MultipleSerializerMixin:
 class CompanyViewset(MultipleSerializerMixin, ModelViewSet):
 
     serializer_class = CompanySerializer
-    http_method_names = ['get', 'post', 'put', 'delete', 'head', 'options', 'trace']
-    permission_classes = (AllowAny,)
-    
+    permission_classes = [CompanyPermissions]
+
     def get_queryset(self):
         return Company.objects.all()
 
@@ -37,7 +46,8 @@ class CompanyViewset(MultipleSerializerMixin, ModelViewSet):
 class ContractViewset(MultipleSerializerMixin, ModelViewSet):
 
     serializer_class = ContractSerializer
-    permission_classes = (AllowAny,)
+    detail_serializer_class = ContractDetailSerializer
+    permission_classes = [ContractPermissions]
 
     def get_queryset(self):
         return Contract.objects.all()
@@ -45,17 +55,21 @@ class ContractViewset(MultipleSerializerMixin, ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(seller=self.request.user)
 
-    def perform_update(self, serializer):
-        serializer.save(updated_time=datetime.now())
-
 
 class EventViewset(MultipleSerializerMixin, ModelViewSet):
 
     serializer_class = EventSerializer
-    permission_classes = (AllowAny,)
+    detail_serializer_class = EventDetailSerializer
+    permission_classes = [EventPermissions]
 
     def get_queryset(self):
         return Event.objects.all()
 
-    def perform_update(self, serializer):
-        serializer.save(updated_time=datetime.now())
+
+class CompanyEventsViewset(MultipleSerializerMixin, ModelViewSet):
+
+    serializer_class = CompanyEventsSerializer
+    permission_classes = [CompanyEventsPermissions]
+
+    def get_queryset(self):
+        return CompanyEvents.objects.all()

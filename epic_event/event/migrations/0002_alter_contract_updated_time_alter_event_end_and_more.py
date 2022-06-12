@@ -6,23 +6,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('event', '0001_initial'),
+        ("event", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='contract',
-            name='updated_time',
+            model_name="contract",
+            name="updated_time",
             field=models.DateTimeField(null=True),
         ),
         migrations.AlterField(
-            model_name='event',
-            name='end',
+            model_name="event",
+            name="end",
             field=models.DateTimeField(null=True),
         ),
         migrations.AlterField(
-            model_name='event',
-            name='start',
+            model_name="event",
+            name="start",
             field=models.DateTimeField(null=True),
         ),
     ]

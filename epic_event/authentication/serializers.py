@@ -4,17 +4,22 @@ from authentication.models import Profile
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-    
+    user = serializers.SerializerMethodField()
+
     class Meta:
         model = Profile
-        fields = ('phone_number', 'birth_date', 'gender')
+        fields = ("user", "phone_number", "birth_date", "gender")
+
+    def get_user(self, instance):
+        queryset = instance.user
+        serializer = UserSerializer(queryset)
+        return serializer.data
 
 
 class UserSerializer(serializers.ModelSerializer):
-    profile = ProfileSerializer(required=True)
     class Meta:
         model = User
-        fields = ["id", "first_name", "last_name", "profile", "email", "password" ]
+        fields = ["id", "username", "first_name", "last_name", "email", "password"]
         extra_kwargs = {"password": {"write_only": True}}
 
     def create(self, validated_data):
@@ -24,6 +29,12 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+    def validate_username(self, value):
+        if User.objects.filter(username=value).exists():
+            raise serializers.ValidationError(
+                "This username is already use by another User"
+            )
+        return value
 
     def validate_email(self, value):
         if User.objects.filter(email=value).exists():
@@ -32,7 +43,6 @@ class UserSerializer(serializers.ModelSerializer):
             )
         return value
 
-    
     def validate_mobile_number(self, value):
         if User.objects.filter(mobile_number=value).exists():
             raise serializers.ValidationError(

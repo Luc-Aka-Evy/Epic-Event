@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('authentication', '0002_profile_delete_user'),
+        ("authentication", "0002_profile_delete_user"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='profile',
-            name='gender',
+            model_name="profile",
+            name="gender",
             field=models.CharField(max_length=20, null=True),
         ),
     ]

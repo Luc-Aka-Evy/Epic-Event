@@ -7,42 +7,57 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('event', '0004_alter_contract_seller'),
+        ("event", "0004_alter_contract_seller"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='CompanyEvents',
+            name="CompanyEvents",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('company', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='event.company')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "company",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="event.company"
+                    ),
+                ),
             ],
         ),
         migrations.RenameField(
-            model_name='event',
-            old_name='time_created',
-            new_name='created_time',
+            model_name="event",
+            old_name="time_created",
+            new_name="created_time",
         ),
         migrations.RemoveField(
-            model_name='event',
-            name='location',
+            model_name="event",
+            name="location",
         ),
         migrations.AddField(
-            model_name='event',
-            name='adress',
-            field=models.CharField(default='', max_length=255),
+            model_name="event",
+            name="adress",
+            field=models.CharField(default="", max_length=255),
         ),
         migrations.AddField(
-            model_name='event',
-            name='updated_time',
+            model_name="event",
+            name="updated_time",
             field=models.DateTimeField(null=True),
         ),
         migrations.DeleteModel(
-            name='Location',
+            name="Location",
         ),
         migrations.AddField(
-            model_name='companyevents',
-            name='event',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='event.event'),
+            model_name="companyevents",
+            name="event",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="event.event"
+            ),
         ),
     ]

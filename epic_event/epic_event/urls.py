@@ -17,21 +17,34 @@ from posixpath import basename
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework_nested import routers
-from authentication.views import UserViewset, UserCreate
-from event.views import CompanyViewset, ContractViewset, EventViewset
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
+from authentication.views import UserViewset, UserCreate, ProfileViewset
+from event.views import (
+    CompanyViewset,
+    ContractViewset,
+    EventViewset,
+    CompanyEventsViewset,
+)
+
+
 admin_router = routers.SimpleRouter()
 admin_router.register("users", UserViewset, basename="users")
+admin_router.register("profile", ProfileViewset, basename="profile")
 
 router = routers.SimpleRouter()
 router.register("company", CompanyViewset, basename="company")
 router.register("contract", ContractViewset, basename="contract")
 router.register("event", EventViewset, basename="event")
+router.register("company-events", CompanyEventsViewset, basename="company-events")
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('epic/auth/', include('rest_framework.urls')),
+    path("admin/", admin.site.urls),
+    path("epic/auth/", include("rest_framework.urls")),
     path("epic/signup/", UserCreate.as_view(), name="signup"),
     path("epic/", include(admin_router.urls)),
     path("epic/", include(router.urls)),
+    path("epic/login/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("epic/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 ]
