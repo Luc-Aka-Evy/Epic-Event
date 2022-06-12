@@ -1,9 +1,9 @@
 import email
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime
 
 # Create your models here.
-
 
 class Company(models.Model):
 
@@ -27,9 +27,9 @@ class Contract(models.Model):
 
     def __str__(self):
         return f"""Contrat avec: {self.company} 
-        crée: {self.created_time} 
+        crée: {self.created_time.strftime("%Y-%m-%d %H:%M:%S")} 
         vendeur: {self.seller.first_name} {self.seller.last_name}
-        derniere modifictaion: {self.updated_time}"""
+        derniere modifictaion: {self.updated_time.strftime("%Y-%m-%d %H:%M:%S")}"""
 
 
 class Event(models.Model):
@@ -42,11 +42,13 @@ class Event(models.Model):
     support = models.ForeignKey(User, on_delete=models.CASCADE, related_name="support")
 
     def __str__(self):
-        return f"""Description: {self.description}
+        return f"""
+        Entreprise: {self.contract.company}
+        Description: {self.description}
          Date: {self.date}
-          crée: {self.created_time} 
+          crée: {self.created_time.strftime("%Y-%m-%d %H:%M:%S")} 
           responsable: {self.support.first_name} {self.support.last_name} 
-          derniere modification: {self.updated_time}"""
+          derniere modification: {self.updated_time.strftime("%Y-%m-%d %H:%M:%S")}"""
 
 
 class CompanyEvents(models.Model):
@@ -54,4 +56,4 @@ class CompanyEvents(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Entreprise: {self.company} {self.event}"
+        return f"{self.event}"
