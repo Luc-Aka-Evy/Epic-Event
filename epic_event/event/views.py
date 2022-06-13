@@ -1,4 +1,5 @@
 from rest_framework.viewsets import ModelViewSet
+from django_filters import rest_framework as filters
 from event.permissions import (
     CompanyPermissions,
     ContractPermissions,
@@ -15,6 +16,13 @@ from event.serializers import (
     EventDetailSerializer,
     CompanyEventsSerializer,
 )
+from .filters import (
+    CompanyFilterSet,
+    ContractFilterSet,
+    EventFilterSet,
+    CompanyEventsFilterSet,
+)
+
 
 # Create your views here.
 
@@ -38,6 +46,8 @@ class CompanyViewset(MultipleSerializerMixin, ModelViewSet):
 
     serializer_class = CompanySerializer
     permission_classes = [CompanyPermissions]
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_class = CompanyFilterSet
 
     def get_queryset(self):
         return Company.objects.all()
@@ -48,6 +58,8 @@ class ContractViewset(MultipleSerializerMixin, ModelViewSet):
     serializer_class = ContractSerializer
     detail_serializer_class = ContractDetailSerializer
     permission_classes = [ContractPermissions]
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_class = ContractFilterSet
 
     def get_queryset(self):
         return Contract.objects.all()
@@ -61,6 +73,8 @@ class EventViewset(MultipleSerializerMixin, ModelViewSet):
     serializer_class = EventSerializer
     detail_serializer_class = EventDetailSerializer
     permission_classes = [EventPermissions]
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_class = EventFilterSet
 
     def get_queryset(self):
         return Event.objects.all()
@@ -70,6 +84,8 @@ class CompanyEventsViewset(MultipleSerializerMixin, ModelViewSet):
 
     serializer_class = CompanyEventsSerializer
     permission_classes = [CompanyEventsPermissions]
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_class = CompanyEventsFilterSet
 
     def get_queryset(self):
         return CompanyEvents.objects.all()

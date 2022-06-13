@@ -37,7 +37,7 @@ class ContractSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Contract
-        fields = ["id", "company", "signed"]
+        fields = ["id", "company", "created_time", "signed", "seller"]
 
     def validate_company(self, value):
         if not Company.objects.filter(name=value).exists():

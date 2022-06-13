@@ -41,7 +41,7 @@ router.register("company-events", CompanyEventsViewset, basename="company-events
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("epic/auth/", include("rest_framework.urls")),
+    path("epic-auth/", include("rest_framework.urls")),
     path("epic/signup/", UserCreate.as_view(), name="signup"),
     path("epic/", include(admin_router.urls)),
     path("epic/", include(router.urls)),
