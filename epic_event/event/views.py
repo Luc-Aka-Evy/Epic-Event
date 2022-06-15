@@ -5,7 +5,6 @@ from event.permissions import (
     ContractPermissions,
     EventPermissions,
 )
-from datetime import datetime
 from event.models import Company, Contract, Event
 from event.serializers import (
     CompanySerializer,
@@ -13,7 +12,6 @@ from event.serializers import (
     ContractDetailSerializer,
     EventSerializer,
     EventDetailSerializer,
-
 )
 from .filters import (
     CompanyFilterSet,

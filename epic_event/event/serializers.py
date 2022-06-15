@@ -34,9 +34,7 @@ class CompanySerializer(serializers.ModelSerializer):
 class ContractSerializer(serializers.ModelSerializer):
 
     company = serializers.CharField(write_only=True)
-    seller = serializers.PrimaryKeyRelatedField(
-        read_only=True
-    )
+    seller = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = Contract
@@ -73,17 +71,25 @@ class ContractDetailSerializer(serializers.ModelSerializer):
 class EventSerializer(serializers.ModelSerializer):
 
     support = serializers.CharField(write_only=True)
+    company = serializers.CharField(write_only=True)
 
     class Meta:
         model = Event
-        fields = ["id", "company", "contract", "description", "date", "adress", "support"]
+        fields = [
+            "id",
+            "company",
+            "contract",
+            "description",
+            "date",
+            "adress",
+            "support",
+        ]
 
     def create(self, validated_data):
         event = Event(**validated_data)
         if event.contract.signed == False:
             raise serializers.ValidationError("This contract is not signed yet")
 
-        event.company = event.contract.company    
         event.save()
         return event
 
@@ -94,6 +100,13 @@ class EventSerializer(serializers.ModelSerializer):
         if User.objects.filter(username=value).exists():
             return User.objects.get(username=value)
 
+    def validate_company(self, value):
+        if not Company.objects.filter(name=value).exists():
+            raise serializers.ValidationError("There is no company with this name")
+
+        if Company.objects.filter(name=value).exists():
+            return Company.objects.get(name=value)
+
 
 class EventDetailSerializer(serializers.ModelSerializer):
 
@@ -103,7 +116,15 @@ class EventDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ["id", "company","contract", "description", "date", "adress", "support"]
+        fields = [
+            "id",
+            "company",
+            "contract",
+            "description",
+            "date",
+            "adress",
+            "support",
+        ]
 
     def get_contract(self, instance):
         queryset = instance.contract

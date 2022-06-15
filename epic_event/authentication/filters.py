@@ -9,7 +9,7 @@ class UserFilterSet(django_filters.FilterSet):
 
     class Meta:
         model = User
-        fields = [ "id", "username", "first_name", "last_name", "email"]
+        fields = ["id", "username", "first_name", "last_name", "email"]
 
 
 class ProfileFilterSet(django_filters.FilterSet):
@@ -19,4 +19,4 @@ class ProfileFilterSet(django_filters.FilterSet):
 
     class Meta:
         model = Profile
-        fields = [ "user", "birth_date", "phone_number", "gender"]
+        fields = ["user", "birth_date", "phone_number", "gender"]

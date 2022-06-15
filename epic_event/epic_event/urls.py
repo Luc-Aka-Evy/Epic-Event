@@ -37,7 +37,6 @@ router.register("contract", ContractViewset, basename="contract")
 router.register("event", EventViewset, basename="event")
 
 
-
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("epic-auth/", include("rest_framework.urls")),

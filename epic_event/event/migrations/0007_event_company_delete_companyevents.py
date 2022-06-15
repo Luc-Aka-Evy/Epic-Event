@@ -7,17 +7,21 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('event', '0006_remove_event_end_remove_event_start_event_date_and_more'),
+        ("event", "0006_remove_event_end_remove_event_start_event_date_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='event',
-            name='company',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='event.company'),
+            model_name="event",
+            name="company",
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="event.company",
+            ),
             preserve_default=False,
         ),
         migrations.DeleteModel(
-            name='CompanyEvents',
+            name="CompanyEvents",
         ),
     ]

@@ -3,6 +3,7 @@ from event.models import Company, Contract, Event
 
 # Register your models here.
 
+
 @admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):
     list_display = ("name", "adress", "phone", "email", "type")
@@ -15,4 +16,13 @@ class ContractAdmin(admin.ModelAdmin):
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ("contract", "description", "adress", "date", "created_time", "updated_time", "support")
+    list_display = (
+        "company",
+        "contract",
+        "description",
+        "adress",
+        "date",
+        "created_time",
+        "updated_time",
+        "support",
+    )

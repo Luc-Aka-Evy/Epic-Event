@@ -1,44 +1,26 @@
 from rest_framework import permissions
 
 
-SAFE_METHODS = ["GET", "HEAD", "OPTIONS"]
-
-
-class IsAdmin(permissions.BasePermission):
+class IsAdmin(permissions.DjangoModelPermissions):
     def has_permission(self, request, view):
-        if request.user.is_superuser:
-            return True
-
-    def has_object_permission(self, request, view, obj):
-        if request.user.is_superuser:
+        permission = super().has_permission
+        if permission and request.user.is_superuser:
             return True
 
 
 class CompanyPermissions(permissions.DjangoModelPermissions):
     def has_permission(self, request, view):
-        if request.user.is_superuser:
-            return True
-
-        if request.user.has_perm("event.view_company"):
+        permission = super().has_permission
+        if permission:
             return True
 
     def has_object_permission(self, request, view, obj):
         object_permission = super().has_object_permission(request, view, obj)
-        if request.user.is_superuser:
-            return True
-
-        if request.user.has_perms(["event.change_company", "event.delete_company"]):
-            return True
-
-        if (
-            request.user.has_perm("event.view_company")
-            and request.method in SAFE_METHODS
-        ):
+        if object_permission:
             return True
 
 
 class ContractPermissions(permissions.DjangoModelPermissions):
-
     def has_object_permission(self, request, view, obj):
         object_permission = super().has_object_permission(request, view, obj)
         if object_permission and obj.seller == request.user:
@@ -47,19 +29,11 @@ class ContractPermissions(permissions.DjangoModelPermissions):
 
 class EventPermissions(permissions.BasePermission):
     def has_permission(self, request, view):
-        if request.user.is_superuser:
-            return True
-
-        if request.user.has_perm("event.view_event"):
+        permission = super().has_permission
+        if permission:
             return True
 
     def has_object_permission(self, request, view, obj):
-        if request.user.is_superuser:
+        object_permission = super().has_object_permission(request, view, obj)
+        if object_permission and obj.support == request.user:
             return True
-
-        if request.user.has_perms(["event.change_event", "event.delete_event"]):
-            return True
-
-        if request.user.has_perm("event.view_event") and request.method in SAFE_METHODS:
-            return True
-
