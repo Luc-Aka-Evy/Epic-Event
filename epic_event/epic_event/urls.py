@@ -24,7 +24,6 @@ from event.views import (
     CompanyViewset,
     ContractViewset,
     EventViewset,
-    CompanyEventsViewset,
 )
 
 
@@ -36,7 +35,7 @@ router = routers.SimpleRouter()
 router.register("company", CompanyViewset, basename="company")
 router.register("contract", ContractViewset, basename="contract")
 router.register("event", EventViewset, basename="event")
-router.register("company-events", CompanyEventsViewset, basename="company-events")
+
 
 
 urlpatterns = [

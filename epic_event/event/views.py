@@ -4,23 +4,21 @@ from event.permissions import (
     CompanyPermissions,
     ContractPermissions,
     EventPermissions,
-    CompanyEventsPermissions,
 )
 from datetime import datetime
-from event.models import Company, Contract, Event, CompanyEvents
+from event.models import Company, Contract, Event
 from event.serializers import (
     CompanySerializer,
     ContractSerializer,
     ContractDetailSerializer,
     EventSerializer,
     EventDetailSerializer,
-    CompanyEventsSerializer,
+
 )
 from .filters import (
     CompanyFilterSet,
     ContractFilterSet,
     EventFilterSet,
-    CompanyEventsFilterSet,
 )
 
 
@@ -78,14 +76,3 @@ class EventViewset(MultipleSerializerMixin, ModelViewSet):
 
     def get_queryset(self):
         return Event.objects.all()
-
-
-class CompanyEventsViewset(MultipleSerializerMixin, ModelViewSet):
-
-    serializer_class = CompanyEventsSerializer
-    permission_classes = [CompanyEventsPermissions]
-    filter_backends = [filters.DjangoFilterBackend]
-    filterset_class = CompanyEventsFilterSet
-
-    def get_queryset(self):
-        return CompanyEvents.objects.all()

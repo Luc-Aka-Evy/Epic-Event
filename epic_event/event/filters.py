@@ -1,5 +1,5 @@
 import django_filters
-from .models import Company, Contract, Event, CompanyEvents
+from .models import Company, Contract, Event
 
 
 class CompanyFilterSet(django_filters.FilterSet):
@@ -29,14 +29,4 @@ class EventFilterSet(django_filters.FilterSet):
 
     class Meta:
         model = Event
-        fields = ["contract", "date", "adress", "support"]
-
-
-class CompanyEventsFilterSet(django_filters.FilterSet):
-    """Implements filters to be used with EventListView."""
-
-    name = django_filters.CharFilter(lookup_expr="iexact")
-
-    class Meta:
-        model = CompanyEvents
-        fields = ["company"]
+        fields = ["company", "contract", "date", "adress", "support"]

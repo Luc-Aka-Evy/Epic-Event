@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from event.models import Company, Contract, Event, CompanyEvents
+from event.models import Company, Contract, Event
 from authentication.serializers import UserSerializer
 
 
@@ -34,6 +34,9 @@ class CompanySerializer(serializers.ModelSerializer):
 class ContractSerializer(serializers.ModelSerializer):
 
     company = serializers.CharField(write_only=True)
+    seller = serializers.PrimaryKeyRelatedField(
+        read_only=True
+    )
 
     class Meta:
         model = Contract
@@ -73,20 +76,16 @@ class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ["id", "contract", "description", "date", "adress", "support"]
+        fields = ["id", "company", "contract", "description", "date", "adress", "support"]
 
     def create(self, validated_data):
         event = Event(**validated_data)
         if event.contract.signed == False:
             raise serializers.ValidationError("This contract is not signed yet")
-        else:
-            company_event = CompanyEvents.objects.create(
-                company=event.contract.company.id, event=event.id
-            )
 
-            event.save()
-            company_event.save()
-            return event
+        event.company = event.contract.company    
+        event.save()
+        return event
 
     def validate_support(self, value):
         if not User.objects.filter(username=value).exists():
@@ -100,10 +99,11 @@ class EventDetailSerializer(serializers.ModelSerializer):
 
     contract = serializers.SerializerMethodField()
     support = serializers.SerializerMethodField()
+    company = serializers.SerializerMethodField()
 
     class Meta:
         model = Event
-        fields = ["id", "contract", "description", "date", "adress", "support"]
+        fields = ["id", "company","contract", "description", "date", "adress", "support"]
 
     def get_contract(self, instance):
         queryset = instance.contract
@@ -115,22 +115,7 @@ class EventDetailSerializer(serializers.ModelSerializer):
         serializer = UserSerializer(queryset)
         return serializer.data
 
-
-class CompanyEventsSerializer(serializers.ModelSerializer):
-
-    company = serializers.SerializerMethodField()
-    event = serializers.SerializerMethodField()
-
-    class Meta:
-        model = CompanyEvents
-        fields = ["id", "company", "event"]
-
     def get_company(self, instance):
         queryset = instance.company
         serializer = CompanySerializer(queryset)
-        return serializer.data
-
-    def get_event(self, instance):
-        queryset = instance.event
-        serializer = EventSerializer(queryset)
         return serializer.data
