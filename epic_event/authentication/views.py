@@ -13,6 +13,7 @@ class UserViewset(ModelViewSet):
     permission_classes = [IsAdmin]
     filter_backends = [filters.DjangoFilterBackend]
     filterset_class = UserFilterSet
+    http_method_names = ["get", "post", "patch", "delete", "head", "options", "trace"]
 
     def get_queryset(self):
         return User.objects.all()
@@ -30,6 +31,7 @@ class ProfileViewset(ModelViewSet):
     permission_classes = [IsAdmin]
     filter_backends = [filters.DjangoFilterBackend]
     filterset_class = ProfileFilterSet
+    http_method_names = ["get", "post", "patch", "delete", "head", "options", "trace"]
 
     def get_queryset(self):
         return Profile.objects.all()

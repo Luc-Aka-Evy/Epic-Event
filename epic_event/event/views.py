@@ -44,6 +44,7 @@ class CompanyViewset(MultipleSerializerMixin, ModelViewSet):
     permission_classes = [CompanyPermissions]
     filter_backends = [filters.DjangoFilterBackend]
     filterset_class = CompanyFilterSet
+    http_method_names = ["get", "post", "patch", "delete", "head", "options", "trace"]
 
     def get_queryset(self):
         return Company.objects.all()
@@ -56,6 +57,7 @@ class ContractViewset(MultipleSerializerMixin, ModelViewSet):
     permission_classes = [ContractPermissions]
     filter_backends = [filters.DjangoFilterBackend]
     filterset_class = ContractFilterSet
+    http_method_names = ["get", "post", "patch", "delete", "head", "options", "trace"]
 
     def get_queryset(self):
         return Contract.objects.all()
@@ -71,6 +73,7 @@ class EventViewset(MultipleSerializerMixin, ModelViewSet):
     permission_classes = [EventPermissions]
     filter_backends = [filters.DjangoFilterBackend]
     filterset_class = EventFilterSet
+    http_method_names = ["get", "post", "patch", "delete", "head", "options", "trace"]
 
     def get_queryset(self):
         return Event.objects.all()
