@@ -39,6 +39,9 @@ An event is define by (company, contract, description, date, adress, created_tim
 
 support is also a user instance who represent the person in charge of the event.
 
+
+Here a diagram to understand the models and relations ![My Image](entity_relation_diagram.pdf)
+
 ## API documentation
 
 you can use request with our API to CRUD the models of the application [here](https://documenter.getpostman.com/view/17653278/UzBjsTma) the list of request available
