@@ -68,4 +68,5 @@ http://localhost:8000/epic/users/? : `username=<username>`, `first_name=<first_n
 http://localhost:8000/epic/profile/? :  `user=<user_id>`, `birth_date=<birth_date>`(format yyyy-mm-dd), `phone_number=<phone_number>`, `gender=<gender>`, `sort_by=<field>`
 
 ## Contribution
-Luc aka-evy
+[Luc Aka-Evy
+](https://github.com/Luc-Aka-Evy)
