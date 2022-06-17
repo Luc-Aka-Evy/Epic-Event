@@ -14,7 +14,9 @@ Epic-Event is a client relation management (CRM) application built to help compa
 
 -Run `python3 manage.py runserver`
 
-This app work with the admin site interface be sure to create a superuser with the command `python3 manage.py createsuperuser` and follow the instructions.
+This app work with the admin site interface http://localhost:8000/admin/
+
+be sure to create a superuser with the command `python3 manage.py createsuperuser` and follow the instructions.
 
 ## How to use
 There is 4 models availale in this application:
@@ -39,9 +41,31 @@ An event is define by (company, contract, description, date, adress, created_tim
 
 support is also a user instance who represent the person in charge of the event.
 
-
 Here a diagram to understand the models and relations ![My Image](entity_relation_diagram.pdf)
+
+## Recommandation
+This application use postgresql for database if you want to use another one go change it in the setting.py file.
+
 
 ## API documentation
 
-you can use request with our API to CRUD the models of the application [here](https://documenter.getpostman.com/view/17653278/UzBjsTma) the list of request available
+you can use request with our API to CRUD the models of the application [here](https://documenter.getpostman.com/view/17653278/UzBjsTma) the list of request available.
+
+This application work with permission be sure to check if you have the good permission to use the request.
+
+### Filters
+you can use filters in the request, here a list of examples:
+
+
+http://localhost:8000/epic/company/? : `name=<name>`, `adress=<adress>`, `phone=<phone>`, `email=<email>`, `type=<type>`, `sort_by=<field>`
+
+http://localhost:8000/epic/contract/? : `company=<company_id>`, `signed=<True or False>`, `seller=<user_id>`, `sort_by=<field>`
+
+http://localhost:8000/epic/event/? : `company=<company_id>`, `contract=<contract_id>`, `date=<date>`(format yyyy-mm-dd), `adress=<adress>`, `support=<user_id>`, `sort_by=<field>`
+
+http://localhost:8000/epic/users/? : `username=<username>`, `first_name=<first_name>`, `last_name=<last_name>`, `email=<email`, `sort_by=<field>`
+
+http://localhost:8000/epic/profile/? :  `user=<user_id>`, `birth_date=<birth_date>`(format yyyy-mm-dd), `phone_number=<phone_number>`, `gender=<gender>`, `sort_by=<field>`
+
+## Contribution
+Luc aka-evy
