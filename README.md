@@ -1,4 +1,8 @@
 # Epic-Event
+Epic-Event is a client relation management (CRM) application built to help companies who organise events.
+
+## Install
+
 
 ## API documentation
 
